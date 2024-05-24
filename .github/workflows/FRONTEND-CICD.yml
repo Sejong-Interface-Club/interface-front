@@ -33,11 +33,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: List files for debugging
+        run: ls -al
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./Dockerfile
+          file: ./Dockerfile 
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/if-club-front-container:latest
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/if-club-front-container:cache
