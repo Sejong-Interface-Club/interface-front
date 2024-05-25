@@ -1,11 +1,18 @@
-// src/app/page.js
+"use client";
 
-import HomePage from '../components/home-page.jsx';
+import Homepage from '../components/homepage.jsx';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Members } from "@/components/members";
 
 const Page = () => {
   return (
       <div>
-        <HomePage />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Homepage />} />
+            <Route path="/members" element={<Members />} />
+          </Routes>
+        </BrowserRouter>
       </div>
   );
 };

@@ -15,7 +15,9 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
-
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-libre_franklin), sans-serif;
+}
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -24,6 +26,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+  font-family: var(--font-taviraj), serif;
 }
 
 @layer utilities {
