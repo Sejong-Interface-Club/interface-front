@@ -1,11 +1,7 @@
+// src/app/members/page.js
 
-import Members from "@/components/members";
-import Layout from "@/app/layout";
+import Members from '../../components/members';
 
-export default function MemberPage() {
-  return (
-      <Layout>
-        <Members/>
-      </Layout>
-  )
+export default function MembersPage() {
+  return <Members />;
 }
