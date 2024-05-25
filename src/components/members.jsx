@@ -1,8 +1,38 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem, DropdownMenuContent, DropdownMenu } from "@/components/ui/dropdown-menu"
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem, DropdownMenuContent, DropdownMenu } from "@/components/ui/dropdown-menu";
+import { getMembers, createMember } from '@/api/members';
+
 export default function Members() {
+  const [members, setMembers] = useState([]);
+  const [newMember, setNewMember] = useState({ name: '', studentId: '', phone: '', email: '' });
+
+  useEffect(() => {
+    fetchMembers();
+  }, []);
+
+  const fetchMembers = async () => {
+    try {
+      const membersData = await getMembers();
+      setMembers(membersData);
+    } catch (error) {
+      console.error('Failed to fetch members:', error);
+    }
+  };
+
+  const handleAddMember = async () => {
+    try {
+      await createMember(newMember);
+      fetchMembers();
+    } catch (error) {
+      console.error('Failed to add member:', error);
+    }
+  };
+
   return (
       <div key="1" className="grid min-h-screen w-full grid-cols-1 lg:grid-cols-[280px_1fr_280px]">
         <div className="hidden border-r bg-gray-100/40 lg:block dark:bg-gray-800/40">
@@ -74,7 +104,7 @@ export default function Members() {
             <section className="space-y-4" id="members">
               <div className="flex items-center justify-between">
                 <h2 className="font-semibold text-lg md:text-2xl">Members</h2>
-                <Button className="lg:ml-0 lg:mt-2" size="sm">
+                <Button onClick={handleAddMember} className="lg:ml-0 lg:mt-2" size="sm">
                   Add Member
                 </Button>
               </div>
@@ -90,45 +120,21 @@ export default function Members() {
                   </tr>
                   </thead>
                   <tbody>
-                  <tr className="border-b border-gray-200 dark:border-gray-800">
-                    <td className="px-4 py-3 text-sm">2023001</td>
-                    <td className="px-4 py-3 text-sm">Sofia Davis</td>
-                    <td className="px-4 py-3 text-sm">123-456-7890</td>
-                    <td className="px-4 py-3 text-sm">
-                      <CheckIcon className="h-4 w-4 text-green-500" />
-                    </td>
-                    <td className="px-4 py-3 text-sm">
-                      <Button size="sm" variant="link">
-                        View Profile
-                      </Button>
-                    </td>
-                  </tr>
-                  <tr className="border-b border-gray-200 dark:border-gray-800">
-                    <td className="px-4 py-3 text-sm">2023002</td>
-                    <td className="px-4 py-3 text-sm">Jackson Lee</td>
-                    <td className="px-4 py-3 text-sm">987-654-3210</td>
-                    <td className="px-4 py-3 text-sm">
-                      <CheckIcon className="h-4 w-4 text-green-500" />
-                    </td>
-                    <td className="px-4 py-3 text-sm">
-                      <Button size="sm" variant="link">
-                        View Profile
-                      </Button>
-                    </td>
-                  </tr>
-                  <tr className="border-b border-gray-200 dark:border-gray-800">
-                    <td className="px-4 py-3 text-sm">2023003</td>
-                    <td className="px-4 py-3 text-sm">Karina Park</td>
-                    <td className="px-4 py-3 text-sm">555-123-4567</td>
-                    <td className="px-4 py-3 text-sm">
-                      <CheckIcon className="h-4 w-4 text-green-500" />
-                    </td>
-                    <td className="px-4 py-3 text-sm">
-                      <Button size="sm" variant="link">
-                        View Profile
-                      </Button>
-                    </td>
-                  </tr>
+                  {members.map((member) => (
+                      <tr key={member.id} className="border-b border-gray-200 dark:border-gray-800">
+                        <td className="px-4 py-3 text-sm">{member.id}</td>
+                        <td className="px-4 py-3 text-sm">{member.name}</td>
+                        <td className="px-4 py-3 text-sm">{member.phone}</td>
+                        <td className="px-4 py-3 text-sm">
+                          <CheckIcon className="h-4 w-4 text-green-500" />
+                        </td>
+                        <td className="px-4 py-3 text-sm">
+                          <Button size="sm" variant="link">
+                            View Profile
+                          </Button>
+                        </td>
+                      </tr>
+                  ))}
                   </tbody>
                 </table>
               </div>
